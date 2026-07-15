@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "$schema": "https://raw.githubusercontent.com/bitfocus/companion-module-base/main/assets/manifest.schema.json",
   "id": "ihse-draco",
@@ -43,4 +44,51 @@
     "apiVersion": "^1.14.0",
     "entrypoint": "../src/index.js"
   }
+=======
+{
+  "$schema": "https://raw.githubusercontent.com/bitfocus/companion-module-base/main/assets/manifest.schema.json",
+  "id": "ihse-draco",
+  "name": "IHSE DRACO",
+  "shortname": "IHSE DRACO",
+  "description": "IHSE Draco KVM matrix control with adaptive discovery, by-name routing, route status feedback, manual route updates, EXT connection status feedback, and global switching delay.",
+  "manufacturer": "IHSE",
+  "products": [
+    "IHSE Draco Tera",
+    "IHSE Draco Enterprise",
+    "IHSE Draco KVM Matrix"
+  ],
+  "keywords": [
+    "ihse",
+    "draco",
+    "draco tera",
+    "draco enterprise",
+    "kvm",
+    "matrix",
+    "routing",
+    "cpu",
+    "con",
+    "ext",
+    "xkeys",
+    "feedback"
+  ],
+  "version": "1.11.0",
+  "license": "MIT",
+  "repository": "https://github.com/YOUR_GITHUB_USERNAME/companion-module-ihse-draco",
+  "bugs": "https://github.com/YOUR_GITHUB_USERNAME/companion-module-ihse-draco/issues",
+  "maintainers": [
+    {
+      "name": "Eric Nielsen"
+    }
+  ],
+  "legacyIds": [
+    "draco-kvm-ejn",
+    "ejn-draco-kvm-g"
+  ],
+  "runtime": {
+    "type": "node22",
+    "api": "nodejs-ipc",
+    "apiVersion": "^1.14.0",
+    "entrypoint": "../src/index.js"
+  }
+>>>>>>> c9bb9d57ea048da1da1f06ec76eab3af7a8e05f0
 }
