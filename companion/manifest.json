@@ -1,4 +1,4 @@
-{
+
   "$schema": "https://raw.githubusercontent.com/bitfocus/companion-module-base/main/assets/manifest.schema.json",
   "id": "ihse-draco",
   "name": "IHSE DRACO",
