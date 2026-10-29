@@ -1,31 +1,13 @@
 {
   "name": "companion-module-ihse-draco",
   "version": "1.11.1",
-  "description": "Companion module for IHSE Draco KVM matrix control with adaptive discovery, routing, route status feedback, EXT status feedback, and global switching delay",
+  "description": "Companion module for IHSE Draco KVM matrix control",
   "main": "src/index.js",
   "license": "MIT",
   "type": "commonjs",
-  "scripts": {
-    "build": "companion-module-build"
-  },
-  "keywords": [
-    "companion-module",
-    "ihse",
-    "draco",
-    "draco tera",
-    "draco enterprise",
-    "kvm",
-    "matrix",
-    "routing",
-    "cpu",
-    "con",
-    "ext",
-    "xkeys",
-    "feedback"
-  ],
-  "dependencies": {
-    "@companion-module/base": "^1.14.0"
-  },
+  "scripts": { "build": "companion-module-build" },
+  "keywords": ["companion-module", "ihse", "draco", "kvm", "matrix"],
+  "dependencies": { "@companion-module/base": "^1.14.0" },
   "devDependencies": {
     "@companion-module/tools": "^2.7.0",
     "webpack": "^5.107.2",

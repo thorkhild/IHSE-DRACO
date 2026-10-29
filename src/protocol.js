@@ -5,32 +5,18 @@ const MODES = {
   USB_HID_CONTROL: 0x0003,
 }
 
-/**
- * Generic telegram builder:
- * ESC [ CMD LEN_LE PAYLOAD
- */
 function buildTelegram(cmd, payload = Buffer.alloc(0)) {
-  const payloadBuf = Buffer.isBuffer(payload) ? payload : Buffer.from(payload)
-  const size = 5 + payloadBuf.length
-
-  const buf = Buffer.alloc(size)
-  buf[0] = 0x1b // ESC
-  buf[1] = 0x5b // [
-  buf[2] = cmd.charCodeAt(0)
-  buf.writeUInt16LE(size, 3)
-
-  if (payloadBuf.length > 0) {
-    payloadBuf.copy(buf, 5)
-  }
-
-  return buf
+  const data = Buffer.isBuffer(payload) ? payload : Buffer.from(payload)
+  const size = 5 + data.length
+  const packet = Buffer.alloc(size)
+  packet[0] = 0x1b
+  packet[1] = 0x5b
+  packet[2] = cmd.charCodeAt(0)
+  packet.writeUInt16LE(size, 3)
+  data.copy(packet, 5)
+  return packet
 }
 
-/**
- * Legacy Draco discovery telegrams:
- * ESC [ g 07 00 00 00
- * ESC [ h 07 00 00 00
- */
 function buildGetCpuListLegacy() {
   return Buffer.from([0x1b, 0x5b, 0x67, 0x07, 0x00, 0x00, 0x00])
 }
@@ -39,9 +25,6 @@ function buildGetConListLegacy() {
   return Buffer.from([0x1b, 0x5b, 0x68, 0x07, 0x00, 0x00, 0x00])
 }
 
-/**
- * Generic 5-byte variants.
- */
 function buildGetCpuListGeneric() {
   return buildTelegram('g')
 }
@@ -50,9 +33,6 @@ function buildGetConListGeneric() {
   return buildTelegram('h')
 }
 
-/**
- * Route CPU to CON.
- */
 function buildRoute(cpu, con, mode) {
   const payload = Buffer.alloc(6)
   payload.writeUInt16LE(cpu, 0)
@@ -61,46 +41,31 @@ function buildRoute(cpu, con, mode) {
   return buildTelegram('b', payload)
 }
 
-/**
- * Per-CON route/status query.
- * Expected to request current route state for a CON.
- */
+// Experimental. Disabled by default in connection settings.
 function buildGetConsole(conId) {
   const payload = Buffer.alloc(2)
   payload.writeUInt16LE(conId, 0)
   return buildTelegram('c', payload)
 }
 
-/**
- * Optional bulk route/status query.
- */
-function buildGetConsoleBulk() {
-  return buildTelegram('d')
-}
-
-/**
- * Parse discovery packet into [{ id, name }]
- */
 function parseDiscoveryPacket(packet) {
   const devices = []
+  if (!Buffer.isBuffer(packet) || packet.length < 9) return devices
 
-  if (!packet || packet.length < 9) return devices
+  const declaredLength = packet.readUInt16LE(3)
+  const usableLength = Math.min(packet.length, declaredLength)
+  const recordStart = 9
+  const recordLength = 24
 
-  const hex = packet.toString('hex')
-  const totalHexLen = packet.readUInt16LE(3) * 2
-
-  for (let i = 18; i + 48 <= totalHexLen; i += 48) {
-    const id = parseInt(hex.substr(i + 2, 2) + hex.substr(i, 2), 16)
-
-    const nameHex = hex.substr(i + 8, 34)
-    const name = Buffer.from(nameHex, 'hex')
+  for (let offset = recordStart; offset + recordLength <= usableLength; offset += recordLength) {
+    const id = packet.readUInt16LE(offset)
+    const name = packet
+      .subarray(offset + 4, offset + 21)
       .toString('ascii')
       .replace(/\0/g, '')
       .trim()
 
-    if (!Number.isNaN(id)) {
-      devices.push({ id, name })
-    }
+    if (id > 0) devices.push({ id, name: name || `ID ${id}` })
   }
 
   return devices
@@ -114,7 +79,6 @@ module.exports = {
   buildGetCpuListGeneric,
   buildGetConListGeneric,
   buildGetConsole,
-  buildGetConsoleBulk,
   buildRoute,
   parseDiscoveryPacket,
 }

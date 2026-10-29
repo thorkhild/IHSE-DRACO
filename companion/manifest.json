@@ -1,42 +1,19 @@
 {
   "$schema": "https://raw.githubusercontent.com/bitfocus/companion-module-base/main/assets/manifest.schema.json",
+  "type": "connection",
   "id": "ihse-draco",
   "name": "IHSE DRACO",
   "shortname": "IHSE DRACO",
-  "description": "IHSE Draco KVM matrix control with adaptive discovery, by-name routing, route status feedback, manual route updates, EXT connection status feedback, and global switching delay.",
+  "description": "IHSE Draco KVM matrix control with adaptive discovery, routing, status feedback, and switching delay.",
   "manufacturer": "IHSE",
-  "products": [
-    "IHSE Draco Tera",
-    "IHSE Draco Enterprise",
-    "IHSE Draco KVM Matrix"
-  ],
-  "keywords": [
-    "ihse",
-    "draco",
-    "draco tera",
-    "draco enterprise",
-    "kvm",
-    "matrix",
-    "routing",
-    "cpu",
-    "con",
-    "ext",
-    "xkeys",
-    "feedback"
-  ],
+  "products": ["Draco Tera", "Draco Enterprise", "Draco KVM Matrix"],
+  "keywords": ["ihse", "draco", "kvm", "matrix", "routing"],
   "version": "1.11.1",
   "license": "MIT",
   "repository": "https://github.com/thorkhild/IHSE-DRACO",
   "bugs": "https://github.com/thorkhild/IHSE-DRACO/issues",
-  "maintainers": [
-    {
-      "name": "Thorkhild"
-    }
-  ],
-  "legacyIds": [
-    "draco-kvm-ejn",
-    "ejn-draco-kvm-g"
-  ],
+  "maintainers": [{ "name": "Thorkhild", "github": "thorkhild" }],
+  "legacyIds": ["draco-kvm-ejn", "ejn-draco-kvm-g"],
   "runtime": {
     "type": "node22",
     "api": "nodejs-ipc",
